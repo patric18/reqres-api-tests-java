@@ -1,0 +1,16 @@
+{
+  "users": {
+    "validUser1": {
+      "name": "Jan Kowalski",
+      "job": "QA Engineer"
+    },
+    "validUser2": {
+      "name": "Anna Nowak",
+      "job": "Developer"
+    },
+    "invalidUser": {
+      "name": "",
+      "job": ""
+    }
+  }
+}
