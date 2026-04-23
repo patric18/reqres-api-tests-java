@@ -10,7 +10,7 @@ public class GetUserTest {
 
     UserClient userClient = new UserClient();
 
-    @Test
+    @Test(groups = {"smoke", "regression"})
     void shouldReturnSingleUser(){
         userClient.getUser(2)
                 .then()
@@ -19,7 +19,7 @@ public class GetUserTest {
                 .body("data.email", containsString("@"));
     }
 
-    @Test
+    @Test(groups = {"regression"})
     void shouldValidateEmailFormatStrictly(){
         userClient.getUser(2)
                 .then()
@@ -27,14 +27,14 @@ public class GetUserTest {
                 .body("data.email", matchesRegex("^[A-Za-z0-9+_.-]+@(.+)$"));
     }
 
-    @Test
+    @Test(groups = {"smoke", "regression"})
     void shouldReturn404ForNotExistingUser(){
         userClient.getUser(2312)
                 .then()
                 .statusCode(404);
     }
 
-    @Test
+    @Test(groups = {"smoke", "regression"})
     void shouldReturnUserFastEnough(){
         userClient.getUser(2)
                 .then()
@@ -42,7 +42,7 @@ public class GetUserTest {
                 .time(lessThan(2000L));
     }
 
-    @Test
+    @Test(groups = {"regression"})
     void shouldHaveCorrectResponseStructure(){
         userClient.getUser(2)
                 .then()
@@ -54,7 +54,7 @@ public class GetUserTest {
                 .body("data", hasKey("last_name"));
     }
 
-    @Test
+    @Test(groups = {"regression"})
     void shouldReturnConsistentUserData(){
         var firstCall = userClient.getUser(2)
                 .then()
@@ -69,7 +69,7 @@ public class GetUserTest {
         assertEquals(firstCall, secondCall);
     }
 
-    @Test
+    @Test(groups = {"regression"})
     void shouldNotHaveNullRequiredFields(){
         userClient.getUser(2)
                 .then()
@@ -78,7 +78,7 @@ public class GetUserTest {
                 .body("data.last_name", notNullValue());
     }
 
-    @Test
+    @Test(groups = {"smoke", "regression"})
     void shouldMeetContractRequirements(){
         userClient.getUser(2)
                 .then()

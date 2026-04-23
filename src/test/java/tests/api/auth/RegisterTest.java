@@ -11,9 +11,13 @@ import static org.hamcrest.Matchers.equalTo;
 
 public class RegisterTest {
 
+    // ReqRes is a mock API and does not persist data.
+// Some tests are marked as 'flaky' because behavior differs from real APIs.
+
     UserClient userClient = new UserClient();
 
-    @Test
+
+    @Test(groups = {"smoke", "regression"})
     void shouldRegisterUser(){
 
         userClient.registerUser("eve.holt@reqres.in", "admin123")
@@ -25,7 +29,7 @@ public class RegisterTest {
                 .body("token.length()", greaterThan(5));
     }
 
-    @Test
+    @Test(groups = {"regression"})
     void shouldFailRegisterWithoutPassword(){
 
         userClient.registerUser(Map.of("email","eve.holt@reqres.in"))
@@ -34,7 +38,7 @@ public class RegisterTest {
                 .body("error", equalTo("Missing password"));
     }
 
-    @Test
+    @Test(groups = {"regression"})
     void shouldFailRegisterWithoutEmail(){
 
 
@@ -45,7 +49,7 @@ public class RegisterTest {
                 .body("error", equalTo("Missing email or username"));
     }
 
-    @Test
+    @Test(groups = {"regression"})
     void shouldFailRegisterWithEmptyBody(){
 
         userClient.registerUser(Map.of())
@@ -54,7 +58,7 @@ public class RegisterTest {
                 .body("error", containsString("Missing"));
     }
 
-    @Test
+    @Test(groups = {"regression", "flaky"})
     void shouldFailRegisterWithInvalidEmail() {
 
 
@@ -64,7 +68,7 @@ public class RegisterTest {
                 .body("error", equalTo("Note: Only defined users succeed registration"));
     }
 
-    @Test
+    @Test(groups = {"regression", "flaky"})
     void shouldHandleDifferentRegisterData(){
 
 

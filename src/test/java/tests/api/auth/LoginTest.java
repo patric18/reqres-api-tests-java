@@ -10,9 +10,12 @@ import static org.testng.Assert.*;
 
 public class LoginTest {
 
+    // ReqRes is a mock API and does not persist data.
+// Some tests are marked as 'flaky' because behavior differs from real APIs.
+
     UserClient userClient = new UserClient();
 
-    @Test
+    @Test(groups = {"smoke", "regression"})
     void shouldLoginUserSuccessfully(){
 
         userClient.loginUser("eve.holt@reqres.in", "admin123")
@@ -22,7 +25,7 @@ public class LoginTest {
                 .body("token.length()", greaterThan(5));
     }
 
-    @Test
+    @Test(groups = {"regression"})
     void shouldFailLoginWithoutPassword(){
 
         userClient.loginUser(Map.of("email","eve.holt@reqres.in"))
@@ -31,7 +34,7 @@ public class LoginTest {
                 .body("error", equalTo("Missing password"));
     }
 
-    @Test
+    @Test(groups = {"regression"})
     void shouldFailLoginWithoutEmail(){
 
         userClient.loginUser(Map.of("password","admin123"))
@@ -40,7 +43,7 @@ public class LoginTest {
                 .body("error", equalTo("Missing email or username"));
     }
 
-    @Test
+    @Test(groups = {"regression"})
     void shouldFailLoginWithEmptyBody(){
 
         userClient.loginUser(Map.of())
@@ -49,7 +52,7 @@ public class LoginTest {
                 .body("error", containsString("Missing"));
     }
 
-    @Test
+    @Test(groups = {"regression", "flaky"})
     void shouldFailLoginWithInvalidEmail(){
 
         userClient.loginUser("invalid.email", "admin123")
@@ -58,7 +61,7 @@ public class LoginTest {
                 .body("error", equalTo("user not found"));
     }
 
-    @Test
+    @Test(groups = {"regression", "flaky"})
     void shouldFailLoginWithWrongPassword(){
 
         userClient.loginUser("eve.holt@reqres.in", "wrongpass")
@@ -70,7 +73,7 @@ public class LoginTest {
         // In real API this should return 401/400.
     }
 
-    @Test
+    @Test(groups = {"regression"})
     void shouldReturnValidTokenStructure(){
 
         userClient.loginUser("eve.holt@reqres.in", "admin123")
@@ -80,7 +83,7 @@ public class LoginTest {
                 .body("token", instanceOf(String.class));
     }
 
-    @Test
+    @Test(groups = {"smoke","regression"})
     void shouldLoginFastEnough(){
 
         userClient.loginUser("eve.holt@reqres.in", "admin123")
@@ -89,7 +92,8 @@ public class LoginTest {
                 .time(lessThan(2000L));
     }
 
-    @Test
+    //token consistency in Mock API
+    @Test(groups = {"flaky"})
     void shouldReturnSameTokenOnRepeatedLogin(){
 
         var first = userClient.loginUser("eve.holt@reqres.in", "admin123")

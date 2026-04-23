@@ -11,9 +11,12 @@ import static org.hamcrest.Matchers.*;
 
 public class CreateUserTest {
 
+    // ReqRes is a mock API and does not persist data.
+// Some tests are marked as 'flaky' because behavior differs from real APIs.
+
     UserClient userClient = new UserClient();
 
-    @Test
+    @Test(groups = {"smoke", "regression"})
     void shouldCreateUser(){
 
         userClient.createUser("Jan", "cooker")
@@ -25,8 +28,8 @@ public class CreateUserTest {
                 .body("createdAt", notNullValue());
     }
 
-
-    @Test
+    // it should be 400 not 201
+    @Test(groups = {"regression", "flaky"})
     void shouldHandleMissingJobField(){
 
 
@@ -38,8 +41,8 @@ public class CreateUserTest {
 
     }
 
-
-    @Test
+    // it should be 400 not 201
+    @Test(groups = {"regression", "flaky"})
     void shouldHandleMissingName(){
 
         userClient.createUser(Map.of("job", "cooker"))
@@ -49,7 +52,8 @@ public class CreateUserTest {
                 .body("id", notNullValue());
     }
 
-    @Test
+    // it should be 400 not 201
+    @Test(groups = {"regression", "flaky"})
     void shouldHandleEmptyBody(){
         userClient.createUser(Map.of())
                 .then()
@@ -57,7 +61,7 @@ public class CreateUserTest {
     }
 
 
-    @Test
+    @Test(groups = {"regression"})
     void shouldHandleLongInputValues(){
         String longName = "a".repeat(100);
 
@@ -67,7 +71,7 @@ public class CreateUserTest {
                 .body("name", equalTo(longName));
     }
 
-    @Test
+    @Test(groups = {"regression"})
     void shouldReturnValidResponseStructure(){
         userClient.createUser("Jan","tester")
                 .then()

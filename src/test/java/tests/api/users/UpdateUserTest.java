@@ -13,9 +13,12 @@ import static org.testng.Assert.*;
 
 public class UpdateUserTest {
 
+    // ReqRes is a mock API and does not persist data.
+// Some tests are marked as 'flaky' because behavior differs from real APIs.
+
     UserClient userClient = new UserClient();
 
-    @Test
+    @Test(groups = {"smoke", "regression"})
     void shouldUpdateUserWithPut(){
 
 
@@ -28,7 +31,7 @@ public class UpdateUserTest {
     }
 
 
-    @Test
+    @Test(groups = {"regression"})
     void shouldPartiallyUpdateUserWithPatch(){
 
         Map<String,Object> body = new HashMap<>();
@@ -41,8 +44,8 @@ public class UpdateUserTest {
                 .body("updatedAt", notNullValue());
     }
 
-
-    @Test
+    //not validated body
+    @Test(groups = {"regression", "flaky"})
     void shouldHandleEmptyBodyOnUpdate(){
 
         userClient.updateUser(2,Map.of())
@@ -54,7 +57,8 @@ public class UpdateUserTest {
 
     }
 
-    @Test
+    //it should be 404 in Real API
+    @Test(groups = {"regression", "flaky"})
     void shouldUpdateNonExistingUser(){
 
         userClient.updateUser(999,"some","plumber")
@@ -65,7 +69,7 @@ public class UpdateUserTest {
                 .body("updatedAt", notNullValue());
     }
 
-    @Test
+    @Test(groups = {"smoke", "regression"})
     void shouldUpdateUserFastEnough(){
         userClient.updateUser(2,"Marek","cleaning")
                 .then()
@@ -73,7 +77,7 @@ public class UpdateUserTest {
                 .time(lessThan(2000L));
     }
 
-    @Test
+    @Test(groups = {"regression"})
     void shouldHaveValidResponseStructure(){
         userClient.updateUser(2,"Marek","cleaning")
                 .then()
@@ -83,7 +87,8 @@ public class UpdateUserTest {
                 .body("$", hasKey("updatedAt"));
     }
 
-    @Test
+    // patch does not return full object in reqres
+    @Test(groups = {"regression", "flaky"})
     void patchShouldNotOverwriteOtherFields(){
 
         userClient.patchUser(2, Map.of("job","astronaut"))
@@ -94,7 +99,7 @@ public class UpdateUserTest {
         // ReqRes does not return full updated user object after PATCH
     }
 
-    @Test
+    @Test(groups = {"regression", "flaky"})
     void putShouldBeIdempotent(){
         userClient.updateUser(2,"Marek","cleaning")
                 .then()
@@ -105,7 +110,7 @@ public class UpdateUserTest {
                 .statusCode(200);
     }
 
-    @Test
+    @Test(groups = {"regression", "flaky"})
     void patchAndPutShouldBothReturnUpdatedAt(){
         var putResponse = userClient.updateUser(2,"Marek","cleaning")
                 .then()
@@ -122,7 +127,8 @@ public class UpdateUserTest {
 
     }
 
-    @Test
+    //reqres accepts null without validation
+    @Test(groups = {"regression", "flaky"})
     void shouldHandleNullValues(){
 
         Map<String, Object> body = new HashMap<>();
@@ -132,7 +138,7 @@ public class UpdateUserTest {
                 .statusCode(200);
     }
 
-    @Test
+    @Test(groups = {"regression"})
     void shouldReturnJsonContentType(){
         userClient.updateUser(2,"Marek","cleaning")
                 .then()

@@ -12,7 +12,7 @@ public class GetUsersTest {
     private final UserClient userClient = new UserClient();
 
 
-    @Test
+    @Test(groups = {"smoke", "regression"})
     void shouldReturnUsersPage2(){
 
         userClient.getUsers(2)
@@ -23,7 +23,7 @@ public class GetUsersTest {
 
     }
 
-    @Test
+    @Test(groups = {"smoke", "regression"})
     void shouldReturnNonEmptyUserList(){
 
         userClient.getUsers(2)
@@ -33,7 +33,7 @@ public class GetUsersTest {
 
     }
 
-    @Test
+    @Test(groups = {"regression"})
     void shouldValidateUserFieldsExist(){
         userClient.getUsers(2)
                 .then()
@@ -44,7 +44,7 @@ public class GetUsersTest {
                 .body("data.last_name", everyItem(notNullValue()));
     }
 
-    @Test
+    @Test(groups = {"regression"})
     void shouldValidateEmailFormat(){
         userClient.getUsers(2)
                 .then()
@@ -52,7 +52,7 @@ public class GetUsersTest {
                 .body("data.email", everyItem(containsString("@")));
     }
 
-    @Test
+    @Test(groups = {"regression"})
     void shouldMatchPerPageWithDataSize(){
         var response = userClient.getUsers(2);
         int perPage = response.then().extract().path("per_page");
@@ -62,7 +62,7 @@ public class GetUsersTest {
                 .body("data.size()", equalTo(perPage));
     }
 
-    @Test
+    @Test(groups = {"regression"})
     void shouldReturnDifferentDataForDifferentPages(){
         var responsePage1 = userClient.getUsers(1)
                 .then()
@@ -77,7 +77,7 @@ public class GetUsersTest {
         assertNotEquals(responsePage1,responsePage2);
     }
 
-    @Test
+    @Test(groups = {"regression"})
     void shouldReturnEmptyListForHighPageNumber(){
         userClient.getUsers(999999)
                 .then()
@@ -85,7 +85,7 @@ public class GetUsersTest {
                 .body("data", empty());
     }
 
-    @Test
+    @Test(groups = {"smoke", "regression"})
     void shouldReturnUsersFastEnough(){
         userClient.getUsers(2)
                 .then()
@@ -93,7 +93,7 @@ public class GetUsersTest {
                 .time(lessThan(2000L));
     }
 
-    @Test
+    @Test(groups = {"regression"})
     void shouldHaveCorrectResponseStructure(){
         userClient.getUsers(2)
                 .then()
@@ -105,7 +105,7 @@ public class GetUsersTest {
                 .body("$", hasKey("total_pages"));
     }
 
-    @Test
+    @Test(groups = {"regression"})
     void shouldHaveValidPaginationConsistency(){
         var response = userClient.getUsers(2)
                 .then()
@@ -118,7 +118,7 @@ public class GetUsersTest {
         assertTrue(page <= totalPages);
     }
 
-    @Test
+    @Test(groups = {"regression"})
     void shouldNotHaveNullUserObjects(){
         userClient.getUsers(2)
                 .then()
@@ -126,7 +126,7 @@ public class GetUsersTest {
                 .body("data", everyItem(notNullValue()));
     }
 
-    @Test
+    @Test(groups = {"regression"})
     void shouldRespectPerPageLimit(){
         var response = userClient.getUsers(2)
                 .then()
@@ -139,7 +139,7 @@ public class GetUsersTest {
         assertTrue(size <= perPage);
     }
 
-    @Test
+    @Test(groups = {"regression"})
     void shouldReturnConsistentUserIdsOrder(){
         var firstCall = userClient.getUsers(2)
                 .then()

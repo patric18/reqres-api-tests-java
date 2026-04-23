@@ -9,17 +9,17 @@ public class DeleteUserTest {
 
     UserClient userClient = new UserClient();
 
-    // NOTE: ReqRes returns 204 even for non-existing users.
-// In real API this should return 404.
+    // ReqRes is a mock API and does not persist data.
+// Some tests are marked as 'flaky' because behavior differs from real APIs.
 
-    @Test
+    @Test(groups = {"smoke", "regression"})
     void shouldDeleteUser(){
         userClient.deleteUser(2)
                 .then()
                 .statusCode(204);
     }
 
-    @Test
+    @Test(groups = {"regression", "flaky"})
     void deleteShouldBeIdempotent(){
         userClient.deleteUser(2)
                 .then()
@@ -31,14 +31,14 @@ public class DeleteUserTest {
 
     }
 
-    @Test
+    @Test(groups = {"regression", "flaky"})
     void shouldDeleteNonExistingUser() {
         userClient.deleteUser(1245)
                 .then()
                 .statusCode(204); // should be 404, but ReqRes 204
     }
 
-    @Test
+    @Test(groups = {"regression"})
     void shouldReturnEmptyBodyOnDelete(){
         userClient.deleteUser(2)
                 .then()
@@ -46,7 +46,7 @@ public class DeleteUserTest {
                 .body(equalTo(""));
     }
 
-    @Test
+    @Test(groups = {"regression", "flaky"})
     void shouldDeleteUsersWithDifferentIds(){
         int[] ids = {1, 2, 3, 999};
 
@@ -57,28 +57,28 @@ public class DeleteUserTest {
         }
     }
 
-    @Test
+    @Test(groups = {"regression", "flaky"})
     void shouldHandleZeroId(){
         userClient.deleteUser(0)
                 .then()
                 .statusCode(204);
     }
 
-    @Test
+    @Test(groups = {"regression", "flaky"})
     void shouldHandleNegativeId(){
         userClient.deleteUser(-1)
                 .then()
                 .statusCode(204);
     }
 
-    @Test
+    @Test(groups = {"regression", "flaky"})
     void shouldHandleVeryLargeId(){
         userClient.deleteUser(Integer.MAX_VALUE)
                 .then()
                 .statusCode(204);
     }
 
-    @Test
+    @Test(groups = {"smoke", "regression"})
     void shouldDeleteUserQuickly(){
         userClient.deleteUser(2)
                 .then()
@@ -86,7 +86,7 @@ public class DeleteUserTest {
                 .time(lessThan(2000L));
     }
 
-    @Test
+    @Test(groups = {"regression", "flaky"})
     void shouldCreateAndDeleteUser(){
         int userId = Integer.parseInt(userClient.createUser("Jan","tester")
                 .then()

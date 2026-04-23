@@ -1,0 +1,41 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+
+<suite name="ReqRes Test Suite" parallel="false">
+
+    <!-- 🔥 SMOKE -->
+    <test name="Smoke Tests">
+        <groups>
+            <run>
+                <include name="smoke"/>
+            </run>
+        </groups>
+        <packages>
+            <package name="tests.api.*"/>
+        </packages>
+    </test>
+
+    <!-- 🧪 REGRESSION -->
+    <test name="Regression Tests">
+        <groups>
+            <run>
+                <include name="regression"/>
+            </run>
+        </groups>
+        <packages>
+            <package name="tests.api.*"/>
+        </packages>
+    </test>
+
+    <!-- ⚠️ FLAKY -->
+    <test name="Flaky Tests">
+        <groups>
+            <run>
+                <include name="flaky"/>
+            </run>
+        </groups>
+        <packages>
+            <package name="tests.api.*"/>
+        </packages>
+    </test>
+
+</suite>
