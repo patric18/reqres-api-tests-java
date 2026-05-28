@@ -1,8 +1,8 @@
-# ReqRes API Test Automation (QA Portfolio)
+# ReqRes API Test Automation
 
 API automation framework for [ReqRes](https://reqres.in/) built with Java, RestAssured, Maven, and TestNG.
 
-## What a recruiter can verify in 2 minutes
+## Project highlights
 
 - API test design for auth and users endpoints.
 - Maintainable structure: client layer, request factories, models, tests.
@@ -71,7 +71,7 @@ mvn test -Dgroups=smoke
 ReqRes is a mock API and does not persist full state like production services.  
 Some scenarios are intentionally marked with `flaky` group where API behavior is inconsistent or intentionally simplified.
 
-## QA documentation
+## Documentation
 
 - `docs/test-plan-api.md`
 - `docs/test-cases-api.md`
