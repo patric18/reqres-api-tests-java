@@ -4,6 +4,7 @@ on:
   push:
     branches: [ "main" ]
   pull_request:
+  workflow_dispatch:
 
 jobs:
   test:
@@ -40,3 +41,4 @@ jobs:
           name: test-results
           path: |
             target/surefire-reports/
+            target/site/

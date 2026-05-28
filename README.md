@@ -1,86 +1,79 @@
-# ReqRes API Automation Framework
+# ReqRes API Test Automation (QA Portfolio)
 
-A professional, scalable API test automation framework built with **Java 17**, **RestAssured**, and **TestNG**. This project demonstrates industry-standard practices in automated testing of RESTful services.
+API automation framework for [ReqRes](https://reqres.in/) built with Java, RestAssured, Maven, and TestNG.
 
-## 🚀 Key Features
+## What a recruiter can verify in 2 minutes
 
-*   **Modular Architecture**: Clear separation between API clients, data factories, and test logic.
-*   **Fluent API Design**: `UserClient` methods designed for readability and ease of use.
-*   **Advanced Test Grouping**: Efficient execution using `smoke`, `regression`, and `flaky` tags.
-*   **Robust CI/CD**: Fully automated pipeline with **GitHub Actions** including test reporting.
-*   **Model-Based Testing**: Utilizes **Lombok** POJOs for request/response mapping and serialization.
-*   **Environment Flexibility**: System-property-driven configuration (BaseURL, API Keys).
+- API test design for auth and users endpoints.
+- Maintainable structure: client layer, request factories, models, tests.
+- Tagged execution strategy: `smoke`, `regression`, `flaky`.
+- CI pipeline with report artifacts on every PR/push.
+- QA documentation in `docs/` (API test plan, test cases, bug notes, traceability).
 
-## 🛠 Tech Stack
+## Tech stack
 
-*   **Language**: Java 17
-*   **API Client**: [RestAssured](https://rest-assured.io/)
-*   **Testing Framework**: [TestNG](https://testng.org/)
-*   **Data Handling**: Lombok, Jackson Databind, Org.JSON
-*   **Assertions**: Hamcrest & AssertJ
-*   **CI/CD**: GitHub Actions
-*   **Build Tool**: Maven
+- Java 17
+- RestAssured
+- TestNG
+- Maven
+- Hamcrest / AssertJ
+- GitHub Actions
 
-## 📂 Project Structure
+## Project structure
 
 ```text
-├── .github/workflows       # CI/CD pipeline definitions
-├── src/main/java/api
-│   ├── client              # Logic for calling specific endpoints
-│   ├── config              # Environment and global configuration
-│   ├── data                # Factories for creating request objects
-│   ├── factory             # RequestSpecification factory (BaseRequest)
-│   ├── model/request       # POJOs for API requests (Lombok)
-│   └── utils               # JSON readers and helper classes
-├── src/test/java/tests
-│   ├── api                 # Categorized API tests (Auth, Users)
-│   └── base                # BaseTest class for setup/teardown
-├── testng.xml              # Main suite definition
-└── testng-ci.xml           # Optimized suite for CI pipeline
+reqres-api-tests-java/
+├── .github/workflows/      # CI pipeline
+├── src/main/java/api/
+│   ├── client/             # API clients per endpoint domain
+│   ├── config/             # Environment configuration
+│   ├── data/               # Request data factories
+│   ├── factory/            # Shared request specification factory
+│   ├── model/request/      # Request payload models
+│   └── utils/              # Helpers
+├── src/test/java/tests/
+│   ├── api/                # API suites by feature
+│   ├── base/               # Base test setup
+│   └── data/               # Test data
+├── docs/                   # Manual QA artifacts
+├── testng.xml
+└── testng-ci.xml
+```
 
-Getting Started
-Prerequisites
-Java 17 installed
+## Run locally
 
-Maven 3.8+ installed
+```bash
+git clone https://github.com/patric18/reqres-api-tests-java.git
+cd reqres-api-tests-java
+mvn clean test
+```
 
-Installation
-1. Clone the repository:
-git clone [https://github.com/patric18/reqres-api-tests-java.git](https://github.com/patric18/reqres-api-tests-java.git)
+Run CI-oriented suite:
 
-2. Install dependencies:
-mvn clean install -DskipTests
-
-### Execution
-*   **Run all tests**:
-    ```bash
-    mvn test
-
-Run CI-optimized suite (Smoke + Regression, No Flaky):
-
-Bash
+```bash
 mvn test -DsuiteXmlFile=testng-ci.xml
+```
 
-*   **Run only Smoke tests**:
-    ```bash
-    mvn test -Dgroups=smoke
+Run only smoke:
 
-📊 CI/CD Integration
-This project uses GitHub Actions to automate the testing lifecycle.
+```bash
+mvn test -Dgroups=smoke
+```
 
-Workflow: Triggered on every push to main and all Pull Requests.
+## CI
 
-Environment: Ubuntu-latest, Temurin JDK 17.
+- Triggered on `push` to `main` and on each pull request.
+- Uses JDK 17 and Maven dependency cache.
+- Uploads `target/surefire-reports` as build artifact for inspection.
 
-Artifacts: Detailed Surefire reports are uploaded after every run for debugging.
+## Notes on ReqRes behavior
 
-📝 Design Decisions & Notes
-Handling Mock API Limitations
-ReqRes is a mock API and does not persist state. To maintain a professional standard:
+ReqRes is a mock API and does not persist full state like production services.  
+Some scenarios are intentionally marked with `flaky` group where API behavior is inconsistent or intentionally simplified.
 
-Tests that fail due to API inconsistency (e.g., ID persistence) are marked with groups = {"flaky"}.
+## QA documentation
 
-The code includes comments explaining the difference between the mock behavior and a production-grade API (e.g., 204 vs 404 status codes).
-
-Scalability
-The use of RequestFactory ensures that any global change (like adding a new Authorization header) is done in one place, affecting all clients automatically.
+- `docs/test-plan-api.md`
+- `docs/test-cases-api.md`
+- `docs/bug-reports-api.md`
+- `docs/traceability-matrix-api.md`
