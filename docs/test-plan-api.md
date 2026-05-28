@@ -6,10 +6,10 @@ Validate critical API behaviors for authentication and user resources with repea
 
 ## In scope
 
-- Auth endpoints (`login`, `register`)
-- User endpoints (`GET`, `POST`, `PUT/PATCH`, `DELETE`)
-- Response status and schema-level validations
-- Selected negative paths for invalid/missing data
+- Auth endpoint coverage from `LoginTest` and `RegisterTest`
+- Users endpoint coverage from `CreateUserTest`, `GetUserTest`, `GetUsersTest`, `UpdateUserTest`, `DeleteUserTest`
+- Response status checks, response body contract checks, and response-time checks
+- Positive, negative, and mock-specific behavior scenarios marked with TestNG groups
 
 ## Out of scope
 
@@ -24,6 +24,9 @@ Validate critical API behaviors for authentication and user resources with repea
   - `smoke` for fast confidence checks
   - `regression` for broader functional verification
   - `flaky` for known mock-environment instability
+- Suite orchestration:
+  - `testng.xml`: smoke + regression + flaky
+  - `testng-ci.xml`: smoke + regression, excluding flaky
 
 ## Entry criteria
 
@@ -34,7 +37,7 @@ Validate critical API behaviors for authentication and user resources with repea
 ## Exit criteria
 
 - Smoke suite passes on PR
-- Regression suite passes on `main`
+- Regression suite from `testng-ci.xml` passes on `main`
 - No open high-severity issues in covered scope
 
 ## Risks and mitigations

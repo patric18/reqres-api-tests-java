@@ -10,6 +10,12 @@ API automation framework for [ReqRes](https://reqres.in/) built with Java, RestA
 - CI pipeline with report artifacts on every PR/push.
 - QA documentation in `docs/` (API test plan, test cases, bug notes, traceability).
 
+## Quality metrics
+
+- Test methods: **63**
+- Group distribution: **smoke 15** / **regression 62** / **flaky 21**
+- CI profile (`testng-ci.xml`, excludes `flaky`): **42 methods**
+
 ## Tech stack
 
 - Java 17
